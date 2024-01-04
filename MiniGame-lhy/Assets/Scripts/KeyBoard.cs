@@ -4,23 +4,19 @@ using UnityEngine;
 
 public class KeyBoard : MonoBehaviour
 {
-    public KeyCode assignedKey;
-
+    public KeyCode assignedKey; //객체의 key
+    public int index;
     public Sprite KeyBoard_0;
     public Sprite KeyBoard_1;
     public Sprite KeyBoard_2;
     public Sprite KeyBoard_3;
     public Sprite SpaceSprite;
 
-    void Start()
+    public void SetKeySprite(KeyCode key, int i)
     {
-        SetVisualRepresentation();
-    }
-
-    void SetVisualRepresentation()
-    {
+        assignedKey = key; //이 스프라이트의 키를 저장
+        index = i;
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
         switch (assignedKey)
         {
             case KeyCode.LeftArrow:
@@ -41,16 +37,12 @@ public class KeyBoard : MonoBehaviour
         }
     }
 
-    public void SetKey(KeyCode key)
-    {
-        assignedKey = key;
-        SetVisualRepresentation();
-    }
 
     void Update()
     {
-        if (Input.GetKeyDown(assignedKey))
-        {   
+        if (Input.GetKeyDown(assignedKey) && index == GameManager.turn)
+        {
+            GameManager.turn++;
             Destroy(gameObject);
         }
     }
