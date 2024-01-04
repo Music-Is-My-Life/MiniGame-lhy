@@ -1,21 +1,22 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class KeyBoard : MonoBehaviour
 {
-    public KeyCode assignedKey; //°´Ã¼ÀÇ key
-    public int index;
+    public KeyCode assignedKey; //ê°ì²´ì˜ key
     public Sprite KeyBoard_0;
     public Sprite KeyBoard_1;
     public Sprite KeyBoard_2;
     public Sprite KeyBoard_3;
     public Sprite SpaceSprite;
+    public int objectIndex;
+    int buttonState = 0; 
 
-    public void SetKeySprite(KeyCode key, int i)
+    public void SetKeySprite(KeyCode key, int index)
     {
-        assignedKey = key; //ÀÌ ½ºÇÁ¶óÀÌÆ®ÀÇ Å°¸¦ ÀúÀå
-        index = i;
+        assignedKey = key; //ì´ ìŠ¤í”„ë¼ì´íŠ¸ì˜ í‚¤ë¥¼ ì €ì¥
+        objectIndex = index;
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         switch (assignedKey)
         {
@@ -37,13 +38,23 @@ public class KeyBoard : MonoBehaviour
         }
     }
 
-
     void Update()
     {
-        if (Input.GetKeyDown(assignedKey) && index == GameManager.turn)
+        if (objectIndex == GameManager.turn)
         {
-            GameManager.turn++;
-            Destroy(gameObject);
+            if (Input.GetKeyDown(assignedKey))
+            {
+                buttonState = 1;
+            }
+            else
+            {
+                if (buttonState == 1)
+                {
+                    GameManager.turn++;
+                    Destroy(gameObject);
+                    buttonState = 0;
+                }
+            }
         }
     }
 }
