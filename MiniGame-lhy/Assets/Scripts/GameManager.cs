@@ -4,35 +4,31 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject[] keyBoardPrefabs;
-    public KeyCode[] possibleKeys;
+    public GameObject[] keyBoardPrefabs; //키보드 이미지를 가진 오브젝트 리스트
+    public KeyCode[] possibleKeys; //실제 입력할 키보드 리스트 (방향키, 스페이스바)
 
-    public Transform keySpawnArea;
+    //public Transform keySpawnArea; // 키보드가 스폰할 지역 (BackGround 오브젝트)
     public float xOffset = 1.5f; // X축 간격 조절 값
 
     public static int turn; //지금 어떤 오브젝트를 입력할 차례인지 (0에서 시작)
 
     private void Start()
     {
-        turn = 0;
-        SpawnKeyBoards(keySpawnArea);
+        SpawnKeyBoards();
     }
 
-    void SpawnKeyBoards(Transform keySpawnArea)
+    public void SpawnKeyBoards()
     {
-        int index = 0;   //현재 생성된 오브젝트 번호 나타내는 index변수
+        int index = 0;   //현재 생성된 키보드 오브젝트가 몇번째로 생성됐는지 나타내는 index변수
 
-        for (float i = -3.0f; i <= 3.0f; i+=1.5f)
+        for (float i = -6.0f; i <= 6.0f; i += xOffset) // -6 -4.5 -3 -1.5 0 1.5 3 4.5 6 총 9개 생성
         {
+            float xPos = i; // 스폰될 오브젝트의 x좌표
+            Vector3 spawnPosition = new Vector3(xPos, 0, 0); //스폰좌표를 vector3로 설정
             int randNum = Random.Range(0, possibleKeys.Length);
-
-            float xPos = keySpawnArea.position.x + i * xOffset;
-            Vector3 spawnPosition = new Vector3(xPos, keySpawnArea.position.y, keySpawnArea.position.z);
-
-            GameObject selectedPrefab = keyBoardPrefabs[randNum];
-            GameObject keyObject = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
-
-            KeyBoard keyScript = keyObject.GetComponent<KeyBoard>();
+            GameObject selectedPrefab = keyBoardPrefabs[randNum]; // 키보드 이미지 프리팹 중에서 랜덤으로 하나 오브젝트 뽑음
+            GameObject keyObject = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity); //뽑은 오브젝트 생성
+            KeyBoard keyScript = keyObject.GetComponent<KeyBoard>(); //생성된 오브젝트의 키보드 스크립트 가져오기
             keyScript.SetKeySprite(possibleKeys[randNum], index++); //index 변수 증가
         }
     }
