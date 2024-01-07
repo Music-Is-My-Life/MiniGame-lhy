@@ -11,8 +11,8 @@ public class KeyBoard : MonoBehaviour
     public Sprite KeyBoard_3; //상
     public Sprite SpaceSprite; //스페이스바
     private int objectIndex;
-    private static int stageNum = 1;
-    int buttonState = 0; //키보드가 눌렸는지 체크하는 변수 
+    int keyState = 0; //키보드가 눌렸는지 체크하는 변수
+    public static int mistake = 0;
 
     public void SetKeySprite(KeyCode key, int index)
     {
@@ -41,41 +41,21 @@ public class KeyBoard : MonoBehaviour
 
     void Update()
     {
-        if (stageNum > 5)
-        {
-            #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-            #else
-                Application.Quit();
-            #endif
-
-            stageNum = 1;
-        }
-
-
         if (objectIndex == GameManager.turn)
         {
             if (Input.GetKeyDown(assignedKey))
             {
-                buttonState = 1;
+                keyState = 1;
             }
             else
             {
-                if (buttonState == 1)
+                if (keyState == 1)
                 {
                     GameManager.turn++;
                     Destroy(gameObject);
-                    buttonState = 0;
+                    keyState = 0;
                 }
             }
-        }
-
-        if (GameManager.turn == 9)
-        {
-            stageNum++;
-            Debug.Log("현재 스테이지 번호 : " + stageNum);
-            GameManager.turn = 0;
-            GameObject.Find("GameManager").GetComponent<GameManager>().SpawnKeyBoards();
         }
     }
 }
