@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     public static int turn; //지금 어떤 오브젝트를 입력할 차례인지 (0에서 시작)
     private static int stageNum = 1;
-    private List<GameObject> spawnedKeyboards = new List<GameObject>();
+    public static List<GameObject> spawnedKeyboards = new List<GameObject>();
 
     [SerializeField]
     private TextMeshProUGUI stageNumText;
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject StageNumPanel;
 
-    int money = 0;
+    int money = 250000;
 
     private void Start()
     {
@@ -59,47 +59,53 @@ public class GameManager : MonoBehaviour
     {
         stageNum++;
         stageNumText.SetText(stageNum.ToString());
+        moneyManager();
+
+    }
+
+    public void moneyManager()
+    {
         moneyNumText.SetText(money.ToString());
-        money = stageNum*10000;
+        money -= KeyBoard.mistake;
     }
 
     public void Update()
     {
-        if (Timer.LimitTime < 0)
+        if (stageNum > 5)
         {
             StageNumPanel.SetActive(false);
             EndStagePanel.SetActive(true);
             stageNum = 1;
-            Timer.LimitTime = 15f;
-            
-            foreach (GameObject keyboard in spawnedKeyboards)
-            {
-                Destroy(keyboard);
-            }
-            spawnedKeyboards.Clear();
         }
-        //
-
         if (turn == 9)
         {
             turn = 0;
             increaseStageNum();
-            SpawnKeyBoards();
+
+            if (stageNum < 6)
+                SpawnKeyBoards();
         }
 
-        // if (stageNum > 5)
+        // if (Timer.LimitTime < 0)
         // {
         //     StageNumPanel.SetActive(false);
         //     EndStagePanel.SetActive(true);
         //     stageNum = 1;
+        //     Timer.LimitTime = 15f;
+            
+        //     foreach (GameObject keyboard in spawnedKeyboards)
+        //     {
+        //         Destroy(keyboard);
+        //     }
+        //     spawnedKeyboards.Clear();
         // }
+        // //
+
         // if (turn == 9)
         // {
         //     turn = 0;
         //     increaseStageNum();
-
-        //     if (stageNum < 6)
-        //         SpawnKeyBoards();
+        //     SpawnKeyBoards();
         // }
     }
 }
