@@ -24,11 +24,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject StageNumPanel;
 
-    int money = 0;
+    int money = 250000;
 
     private void Start()
     {
         stageNum = 1;
+        money = 250000;
         SpawnKeyBoards();
         StageNumPanel.SetActive(true);
 
@@ -61,15 +62,13 @@ public class GameManager : MonoBehaviour
     {
         stageNum++;
         stageNumText.SetText(stageNum.ToString());
-        moneyManager();
-
     }
 
     public void moneyManager()
     {
-        moneyNumText.SetText(money.ToString());
-        money = 250000 - KeyBoard.mistake;
+        money -= 50000;
         Debug.Log("money = " + money);
+        moneyNumText.SetText(money.ToString());
     }
 
     public void Update()
@@ -83,9 +82,6 @@ public class GameManager : MonoBehaviour
             spawnedKeyboards.Clear();
             StageNumPanel.SetActive(false);
             EndStagePanel.SetActive(true);
-            stageNum = 1;
-            money = 250000;
-            KeyBoard.mistake = 0;
         }
         if (turn == 9)
         {

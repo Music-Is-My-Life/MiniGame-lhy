@@ -12,7 +12,6 @@ public class KeyBoard : MonoBehaviour
     public Sprite SpaceSprite; //스페이스바
     public int objectIndex;
     int keyState = 0; //키보드가 눌렸는지 체크하는 변수
-    public static int mistake = 0;
 
     public void SetKeySprite(KeyCode key, int index)
     {
@@ -47,13 +46,13 @@ public class KeyBoard : MonoBehaviour
             {
                 keyState = 1;
             }
-            if (keyState == 1 && !Input.anyKeyDown)
+            if (keyState == 1 && !Input.anyKeyDown) //한번 입력되고 다른 키가 입력되지 않을 때
             {
                 GameManager.turn++;
                 Destroy(gameObject);
                 keyState = 0;
             }
-            else if (Input.anyKeyDown && !Input.GetKeyDown(assignedKey) && !Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1))
+            else if (Input.anyKeyDown && !Input.GetKeyDown(assignedKey) && !Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1)) 
             {
                 keyState = 0;
                 foreach (GameObject keyboard in GameManager.spawnedKeyboards)
@@ -61,8 +60,7 @@ public class KeyBoard : MonoBehaviour
                     Destroy(keyboard);
                 }
                 GameManager.spawnedKeyboards.Clear();
-                mistake += 50000;
-                Debug.Log("mistake = " + mistake);
+                GameObject.FindWithTag("GM").GetComponent<GameManager>().moneyManager();
                 GameObject.FindWithTag("GM").GetComponent<GameManager>().increaseStageNum();
                 GameObject.FindWithTag("GM").GetComponent<GameManager>().SpawnKeyBoards();
             }
