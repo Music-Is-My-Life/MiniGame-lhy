@@ -55,14 +55,14 @@ public class KeyBoard : MonoBehaviour
             }
             else if (Input.anyKeyDown && !Input.GetKeyDown(assignedKey) && !Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1))
             {
-                keyState = 1;
+                keyState = 0;
                 foreach (GameObject keyboard in GameManager.spawnedKeyboards)
                 {
                     Destroy(keyboard);
                 }
                 GameManager.spawnedKeyboards.Clear();
                 mistake += 50000;
-                Debug.Log("mistake = " + mistake); //
+                Debug.Log("mistake = " + mistake);
                 GameObject.FindWithTag("GM").GetComponent<GameManager>().increaseStageNum();
                 GameObject.FindWithTag("GM").GetComponent<GameManager>().SpawnKeyBoards();
             }

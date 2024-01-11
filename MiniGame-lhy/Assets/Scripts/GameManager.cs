@@ -28,8 +28,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        stageNum = 1;
         SpawnKeyBoards();
         StageNumPanel.SetActive(true);
+
     }
 
     public void SpawnKeyBoards()
@@ -39,7 +41,7 @@ public class GameManager : MonoBehaviour
             Destroy(keyboard);
         }
         spawnedKeyboards.Clear();
-
+        turn = 0;
         int index = 0;   //현재 생성된 키보드 오브젝트가 몇번째로 생성됐는지 나타내는 index변수
 
         for (float i = -6.0f; i <= 6.0f; i += xOffset) // -6 -4.5 -3 -1.5 0 1.5 3 4.5 6 총 9개 생성
@@ -85,7 +87,6 @@ public class GameManager : MonoBehaviour
             money = 250000;
             KeyBoard.mistake = 0;
         }
-
         if (turn == 9)
         {
             turn = 0;
@@ -108,7 +109,6 @@ public class GameManager : MonoBehaviour
         //     }
         //     spawnedKeyboards.Clear();
         // }
-        // //
 
         // if (turn == 9)
         // {
