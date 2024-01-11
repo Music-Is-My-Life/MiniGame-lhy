@@ -10,7 +10,7 @@ public class KeyBoard : MonoBehaviour
     public Sprite KeyBoard_2; //하
     public Sprite KeyBoard_3; //상
     public Sprite SpaceSprite; //스페이스바
-    private int objectIndex;
+    public int objectIndex;
     int keyState = 0; //키보드가 눌렸는지 체크하는 변수
     public static int mistake = 0;
 
@@ -49,23 +49,23 @@ public class KeyBoard : MonoBehaviour
             }
             if (keyState == 1 && !Input.anyKeyDown)
             {
-                // 사용자가 키를 눌렀을 때만 turn을 증가시키고 객체를 파괴
                 GameManager.turn++;
                 Destroy(gameObject);
                 keyState = 0;
             }
-            // else if (Input.anyKeyDown && !Input.GetKeyDown(assignedKey) && !Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1))
-            // {
-            //     keyState = 0;
-            //     foreach (GameObject keyboard in GameManager.spawnedKeyboards)
-            //     {
-            //         Destroy(keyboard);
-            //     }
-            //     GameManager.spawnedKeyboards.Clear();
-            //     mistake += 50000;
-            //     // GameObject.FindWithTag("GM").GetComponent<GameManager>().increaseStageNum();
-            //     // GameObject.FindWithTag("GM").GetComponent<GameManager>().SpawnKeyBoards();
-            // }
+            else if (Input.anyKeyDown && !Input.GetKeyDown(assignedKey) && !Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1))
+            {
+                keyState = 1;
+                foreach (GameObject keyboard in GameManager.spawnedKeyboards)
+                {
+                    Destroy(keyboard);
+                }
+                GameManager.spawnedKeyboards.Clear();
+                mistake += 50000;
+                Debug.Log("mistake = " + mistake); //
+                GameObject.FindWithTag("GM").GetComponent<GameManager>().increaseStageNum();
+                GameObject.FindWithTag("GM").GetComponent<GameManager>().SpawnKeyBoards();
+            }
         }
     }
 }
